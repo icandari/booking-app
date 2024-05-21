@@ -1,41 +1,23 @@
 import express from "express";
 import Hotel from "../models/Hotel.js"
+import { createError } from "../utils/error.js";
+import { createHotel, deleteHotel, getHotel, getHotels, updateHotel } from "../controllers/hotel.js";
 
 const router = express.Router();
 
 //CREATE
-router.post("/", async (req,res)=>{
-    
-    const newHotel = new Hotel(req.body)
-    
-    try {
-        const savedHotel = await newHotel.save()
-        res.status(200).json(savedHotel)
-    } catch (error) {
-        res.status(500).json(err)
-    }
-});
-//UPDATE
-router.put("/:id", async (req,res)=>{
-    
-    try {
-        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, { $set: req.body}, {new: true}) //new true returns the updated data
-        res.status(200).json(updatedHotel)
-    } catch (error) {
-        res.status(500).json(err)
-    }
-});
-//DELETE   UPDATE THIS Yotuube video stopped at 30:19
-router.put("/:id", async (req,res)=>{
-    
-    try {
-        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, { $set: req.body}, {new: true}) //new true returns the updated data
-        res.status(200).json(updatedHotel)
-    } catch (error) {
-        res.status(500).json(err)
-    }
-});
-//GET
-//GET ALL
+router.post("/", createHotel);
 
-export default router
+//UPDATE
+router.put("/:id", updateHotel);
+
+//DELETE   
+router.delete("/:id", deleteHotel);
+
+//GET
+router.get("/:id", getHotel);
+
+//GET ALL
+router.get("/", getHotels);
+
+export default router;
